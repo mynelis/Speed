@@ -14,6 +14,9 @@ The query builder is part of the IDM and adopts a natural language syntax for wr
    - _mysqli extension_
    - _SimpleXML extension_
    - _DomDocument support_
+
+   Optional Extensions
+   - _Tidy support_
    
 -  MariaDB 10 or higher
 
