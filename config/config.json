@@ -1,0 +1,133 @@
+{
+	// APPLICATION CONFIGURATION
+	// ======================================================================================
+	"app": {
+		// Default title for your application. This can be overriden 
+		// when setting the $meta layout property by setting a custom
+		// $title attribute.
+		"alias": "Speed + F7 Demo",
+
+		// Toggle debug mode. When debug mode is set to false, no errors
+		// will be shown until the errors() helper function is intentionally
+		// called, which contains all caught errors.
+		// Debug mode should always be turned on in development environments.
+		"debug": true,
+
+		// Toggle Application Access Control mode. Always set this flag to
+		// true in production for applications that require access control.
+		"enable_access_control": false,
+
+		// Enable/disable content caching.
+		// This applies only to XML view and partial files.
+		// When caching is enabled, a file for $module_$class.xml will be
+		// saved in the app/cache/xml directory after the first processing 
+		// of the view. Subsequent view processing requests use this cached
+		// file instead of rebuilding a template from the main view file. 
+		"cache": false,
+
+		// Directory for storing all cached files. 
+		// Note that the XML view caches are stored in a sub directory (xml)
+		// inside this directory. Other PHP cache files are stored in this
+		// directory itself. 
+		"cache_dir": "app/cache",
+
+		// Location for temporal HTML template files. 
+		// All HTML files in this directory will be converted to compatible
+		// XML files. Nested directories will be recursively globbed and files
+		// inside them will be automatically converted as well.
+		// 
+		// You could organize this directory according to your view structure
+		// to make it easier to move converted XML files to their appropriate
+		// view directories.
+		"html_tpl_dir": "app/view/tmp",
+
+		// You can customize error handling here. Just comment out error types
+		// you do not wish to handle, or add error types you wish to handle
+		// which are not captured here.
+		"error_handler": {
+
+			// Types of error to report
+			"report": {
+				"256": "User Error", 
+				"512": "Warning", 
+				"1024": "Notice", 
+				"8192": "Deprecated"
+			},
+
+			// Parameters to track from errors. 
+			// The default setting tracks the file, line, code and message
+			// properties of all errors.
+			"params": [
+				"file", "line", "message", "code"
+			]
+		},
+
+		// This line is required for dynamic remote calls (aka Activate).
+		// Activate is an extension of the F7 JS library that provides an easy 
+		// and dynamic way of sending and handling remote calls.
+		// Only public methods of the controller which begins with the given
+		// prefix can be accessed by calls from Activate.
+		"remote_call_prefix": "rc__"
+	},
+
+	// MULTIPLE SESSION HANDLING
+	// ======================================================================================
+	"sessions": {
+
+		// You can setup different sessions for each application if you're 
+		// developing a suit of applications. This default $app node is used
+		// for both the default application and CMS.
+		"cms": {
+			"timeout": "1 hour",
+			"autostart": true,
+			"autoend": true
+		},
+
+		"app": {
+			"timeout": "1 hour",
+			"autostart": false,
+			"autoend": true
+		}
+	},
+
+	// DATABASE SETTINGS
+	// ======================================================================================
+	// NB: Multiple database connections are not supported at this time,
+	// therefore only the main connection is required here.
+	"databases": {
+
+		"main": {
+
+			// Whether to automatically connect to this instance when application is being
+			// initialized, or to be connected manually later on demand.
+			// - auto
+			// - manual
+			// If this is not set, the default is "manual"
+			"mode": "auto",
+
+			// PHP extension for connecting to MySql. Default value for this
+			// setting is the mysqli library, and is the only supported adapter currently.
+			// Support for PDO driver for MySQL, MSSQL, SQLite, PostgreSQL and Oracle
+			// drivers will be supported in subsequent versions.
+			"driver": "mysqli",
+
+			// Hostname or IP address of the database server.
+			// The default localhost is used by many hosting providers.
+			// "host": "localhost",
+
+			// Name of the database to connect to
+			"name": "speed",
+
+			// Database login username
+			"username": "speed_usr",
+
+			// Connection password
+			// NB: this is the plain unencrypted password. You therefore need to
+			// set add "json" to the Apache "FilesMatch" directive and deny access
+			// to this file
+			"password": "EkXxpuqMRJM7FGPv"
+		}
+	},
+
+	"timezone": "Africa/Accra"
+}
