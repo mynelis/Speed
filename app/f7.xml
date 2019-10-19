@@ -1,0 +1,92 @@
+<binding>
+
+	<group id="system" label="System">
+		<entry id="system.settings" table="sys_config" label="Settings" icon="cog">
+			<limit offset="0" rows="1"/>
+			<field name="variable" link="true" edit="true" format="\w+" label="Variable" unique="true" search="true">
+				<list>
+					<value name="title">Default Title</value>
+				</list>
+			</field>
+			<field name="value" edit="true" format="\w+" label="Value" search="true"/>
+		</entry>
+		<entry id="system.users" table="sys_users" label="Users" icon="users">
+			<field name="username" type="word" label="Username" edit="true" link="true" unique="true" format="lowercase" search="true" />
+			<field name="password" list="false" edit="false" label="Password" cryptor="md5"/>
+			<field name="fullname" label="Fullname" edit="true" search="true" />
+			<field name="email" label="Email" edit="false" list="false" search="true" />
+			<field name="active" type="bool" default="1" label="Active" edit="true" />			
+		</entry>
+		<entry id="system.groups" table="sys_groups" label="User Groups" icon="groups">
+			<field name="name" label="Name" edit="true" link="true" unique="true" format="\w+" search="true" />
+			<field name="cms_access" label="CMS Admins" list="false" edit="true" type="cms_access" cryptor="system" />
+			<field name="app_access" label="App Admins" list="false" edit="true" type="app_access" cryptor="system" />
+		</entry>
+		<entry id="system.access" table="sys_access" label="Group Access" icon="access">
+			<field name="user_id" label="User" edit="true" link="true" format="\d+">
+				<ref table="sys_users" link="id">
+					<filter key="active" value="1" />
+					<filter key="deleted" value="0" />
+					<order key="fullname" direction="asc" />
+					<select show="name">
+						<field name="id" />
+						<field name="fullname" alias="name" />
+					</select>
+				</ref>
+			</field>
+			<field name="group_id" label="Group" edit="true" format="\d+">
+				<ref table="sys_groups" link="id">
+					<filter key="deleted" value="0" />
+					<order key="name" direction="asc" />
+					<select show="name">
+						<field name="id" />
+						<field name="name" />
+					</select>
+				</ref>				
+			</field>
+		</entry>
+	  	<entry id="system.changepass" label="Change Password" scope="core" action="GetPasswordForm"/>
+		<entry id="system.logout" label="Logout" scope="core" action="Logout"/>
+	</group>
+
+	<group id="setup" label="Setup">
+		<entry id="setup.task_category" table="category" label="Task Categories" icon="">
+			<field name="name" label="Name" link="true" format="\w+" unique="true" search="true"/>
+		</entry>
+	</group>
+
+	<group id="entries" label="Entries">
+		<entry id="entries.new_task" table="task" label="New Tasks" icon="" readonly="true">
+			<filter key="status" value="1" />
+			<field name="heading" label="Heading" type="label" link="true" search="true"/>
+			<field name="description" type="label" list="false" label="Description" search="true"/>
+			<field name="category_id" label="Category" edit="true">
+				<ref table="category" link="id">
+					<filter key="deleted" value="0" />
+					<order key="name" direction="asc" />
+					<select show="name">
+						<field name="id" />
+						<field name="name" />
+					</select>
+				</ref>				
+			</field>
+		</entry>
+		<entry id="entries.completed_task" table="task" label="Completed Tasks" icon="" readonly="true">
+			<filter key="status" value="0" />
+			<field name="heading" label="Heading" link="true" type="label" search="true"/>
+			<field name="description" type="label" list="false" label="Description" search="true"/>
+			<field name="category_id" label="Category" edit="true">
+				<ref table="category" link="id">
+					<filter key="deleted" value="0" />
+					<order key="name" direction="asc" />
+					<select show="name">
+						<field name="id" />
+						<field name="name" />
+					</select>
+				</ref>				
+			</field>
+			<field name="date_completed" type="label" label="Date Completed" search="true"/>
+		</entry>
+	</group>
+
+</binding>

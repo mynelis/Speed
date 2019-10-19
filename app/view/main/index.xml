@@ -1,0 +1,18 @@
+<view>
+    
+    <main>
+    	<center>
+    		<h1>Welcome to Speed</h1>
+    		<h3>Sample Applications</h3>
+    		<hr />
+
+    		<ol identity="setup.task_category" parse="auto" data-bind="setup.task_category">
+    			<li><a href="todo/list">TODO List</a></li>
+                <!-- <ul>
+                    <li repeat="0" data-bind="${bind}" data-id="${id}">${name} <hr /></li>
+                </ul> -->
+    		</ol>
+    	</center>
+    </main>
+
+</view>

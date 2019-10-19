@@ -1,0 +1,28 @@
+<view>
+	
+	<main style="margin-left:20px">
+		<h3>Edit Task</h3>
+
+		<h2 identity="system_notice" repeat="1" class="${type}">${message}</h2>
+
+		<form method="post" action="" identity="todo_edit" repeat="1">
+			<input type="hidden" name="todo_edit_token" value="${todo_edit_token}" />
+			<dl>
+				<dd><input type="text" name="heading" placeholder="Heading" value="${heading}" /></dd>
+				<dd><textarea name="description" cols="30" rows="10" placeholder="Description">${description}</textarea></dd>
+				<dd identity="category_options">
+					<select name="category_id" repeat="1">
+						<option value="0">-- Select Category --</option>
+						${category_options}
+					</select>
+				</dd>
+				<dd>
+					<br />
+					<button type="submit">Update</button>
+					<a href="todo/list"> LIST</a> 
+				</dd>
+			</dl>
+		</form>
+	</main>
+
+</view>

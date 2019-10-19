@@ -1,0 +1,26 @@
+<view>
+	
+	<main style="margin-left:20px">
+
+		<div identity="task_list_pending" repeat="1" data-bind="entries.new_task">
+			<h3>Task List (Pending)</h3>
+			<ol>
+				<li repeat="0">
+					${heading uppercase} <a href="todo/edit/${id}">EDIT</a> | <a href="todo/done/${id}">DONE</a> | <a href="todo/delete/${id}">DELETE</a>
+				</li>
+			</ol>
+		</div>
+
+		<div identity="task_list_completed" repeat="1" data-bind="entries.completed_task">
+			<h3>Task List (Done)</h3>
+			<ol>
+				<li repeat="0">
+					${heading uppercase} <label>${date_completed dateformat D. M j, Y}</label> &amp;middot; <a href="todo/edit/${id}">EDIT</a> | <a href="todo/delete/${id}">DELETE</a>
+				</li>
+			</ol>
+		</div>
+
+		<a href="todo/add">Create Task</a>
+	</main>
+
+</view>

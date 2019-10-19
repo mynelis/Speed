@@ -1,0 +1,18 @@
+<snippets>
+	<general>	
+		<notice>
+			<p class="notice">${text}</p>
+		</notice>
+		<alert>
+			<p class="alert">${text}</p>
+		</alert>		
+		<option-single>
+			<option value="${value}">${label}</option>
+		</option-single>
+		<option-group>
+			<optgroup label="${label}">
+				${list}
+			</optgroup>
+		</option-group>
+	</general>
+</snippets>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html lang="en">
+
+	<head identity="meta" repeat="1">
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=0.1" />
+
+		<title>${title}</title>
+		<base href="${baseurl}" target="_top" />
+
+		<partial select="/meta/icons" />
+		<partial select="/meta/assets" />
+		
+	</head>
+
+	<body>
+		<view />
+	
+		<partial select="/footer/scripts" />
+
+		<script>
+			$(document).ready(function () {
+				f7.use('activate');
+
+				f7.load(function (scripts) {
+					//console.log(this, f7.cms);
+				});
+			});
+		</script>
+	</body>	
+	
+</html>

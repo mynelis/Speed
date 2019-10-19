@@ -1,0 +1,34 @@
+<view>
+	
+	<main style="margin-left:20px">
+		<h3>New Task</h3>
+
+		<h2 identity="system_notice" repeat="1" class="${type}">${message}</h2>
+
+		<form method="post" action="" identity="todo_add" repeat="1">
+			<input type="hidden" name="todo_add_token" value="${todo_add_token}" />
+			<dl>
+				<dd><input type="text" name="heading" placeholder="Heading" value="${heading}" /></dd>
+				<dd><textarea name="description" cols="30" rows="10" placeholder="Description">${description}</textarea></dd>
+				<!-- <dd identity="task_categories">
+					<select name="category_id">
+						<option value="0">- - Select Category - -</option>
+						<option value="${id}" repeat="0">${name}</option>
+					</select>
+				</dd> -->
+				<dd identity="category_options">
+					<select name="category_id" repeat="1">
+						<option value="0">-- Select Category --</option>
+						${category_options}
+					</select>
+				</dd>
+				<dd>
+					<br />
+					<button type="submit">&amp;plus; Add</button> 
+					<a href="todo/list"> LIST</a> 
+				</dd>
+			</dl>
+		</form>
+	</main>
+
+</view>

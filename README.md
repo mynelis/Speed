@@ -1,5 +1,4 @@
-# SPEED
-**Speed PHP Framework + F7 CMS**
+**SPEED**
 
 _Speed is an MVC (iMVC/IDM*) PHP web application development framework that empowers a rapid and clean developent process.
 iMVC is a regular MVC with an Intrinsic Dynamic Modeling (IDM) feature that also supports file-based models.

@@ -1,0 +1,9 @@
+<footer>
+	
+    <scripts>
+        <script src="system/f7/vendor/jquery/js/jquery-3.2.1.min.js"></script>
+    	<script src="system/f7/vendor/jquery/js/jquery-ui.js"></script>
+    	<script src="system/f7/js/f7.js"></script>
+    </scripts>
+
+</footer>

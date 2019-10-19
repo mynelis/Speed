@@ -1,0 +1,3 @@
+<view>
+	<h1 identity="system_notice" repeat="1" class="${type}">${message}</h1>
+</view>
