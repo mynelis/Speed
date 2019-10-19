@@ -1,0 +1,876 @@
+<snippets>
+
+	<access>
+		<list>
+			<table id="cms_access_table_${name}" class="edit_table access_table" data-binding="${bind}" data-name="${name}">
+				<thead>
+					<tr>
+						<th></th>
+						<th colspan="3">PRESETS</th>
+						<th></th>
+						<th colspan="4">CRUD</th>
+					</tr>
+					<tr>
+						<th></th>
+						<th class="cr" title="Creator">CR</th>
+						<th class="ed" title="Editor">ED</th>
+						<th class="re" title="Reader">RE</th>
+						<th class="sep"></th>
+						<th>C</th>
+						<th>R</th>
+						<th>U</th>
+						<th>D</th>
+					</tr>
+				</thead>
+				<tbody>
+					${items}
+				</tbody>
+				<tfoot>
+					<tr>
+						<th colspan="9"><textarea class="hidden" name="${name}">${value}</textarea></th>
+					</tr>
+				</tfoot>
+			</table>
+		</list>
+		<group>
+			<tr class="group">
+				<th colspan="9"><a href=":;" data-id="${id}">${label}</a><br/></th>
+			</tr>
+		</group>
+		<item>
+			<tr data-group="${group}">
+				<td><!-- <span><![CDATA[&raquo;]]></span>  -->${label}</td>
+				<td title="Creator"><input type="radio" class="preset cr" data-entry="${id}" data-auth="cr" data-modes="crud" name="${id}.${name}" title="Creator"/></td>
+				<td title="Editor"><input type="radio" class="preset ed" data-entry="${id}" data-auth="ed" data-modes="ru" name="${id}.${name}" title="Editor"/></td>
+				<td title="Reader"><input type="radio" class="preset re" data-entry="${id}" data-auth="re" data-modes="r" name="${id}.${name}" title="Reader"/></td>
+				<td class="sep"></td>
+				<td><input type="checkbox" class="custom c" data-entry="${id}" data-mode="c"/></td>
+				<td><input type="checkbox" class="custom r" data-entry="${id}" data-mode="r"/></td>
+				<td><input type="checkbox" class="custom u" data-entry="${id}" data-mode="u"/></td>
+				<td><input type="checkbox" class="custom d" data-entry="${id}" data-mode="d"/></td>
+			</tr>
+		</item>
+	</access>
+
+	<!-- GENERAL SNIPPETS -->
+	<general>
+		<toolbar>
+			<toolbox>
+				<dl id="toolbox">
+					<dt><i class="fas fa-cloud-download-alt"></i></dt>
+					${toolbar}
+				</dl>
+			</toolbox>
+			<tool>
+				<dd><![CDATA[<a href="cms/download/${name}/${bind}">${name}</a>]]></dd>
+			</tool>
+		</toolbar>
+
+		<custom_listviews>
+			<toolbar-view>
+				<h5 id="list-form-label" class="form-label">
+					${label}${searchform}
+					<th class="toolbar">
+						${toolbar}
+					</th>
+				</h5>
+				<table id="cms_box" class="list_table sortable">
+					<thead>
+						<tr id="cms_field_headers">
+							${head}
+						</tr>
+					</thead>
+					<tbody>${body}</tbody>
+					<tfoot>
+						${foot}
+					</tfoot>
+				</table>
+			</toolbar-view>
+		</custom_listviews>
+
+		<listview>
+			<h5 id="list-form-label" class="form-label">${label}${searchform}<br/></h5>
+			<table id="cms_box" class="list_table sortable">
+				<thead>
+					<tr id="cms_field_headers">
+						${head}
+					</tr>
+				</thead>
+				<tbody>${body}</tbody>
+				<tfoot>
+					${foot}
+				</tfoot>
+			</table>
+		</listview>
+
+		<searchform>
+			<form action="" method="post" style="display:inline" onsubmit="return do_cms_search();">
+				<input type="search" id="search_kw" placeholder="${keywords}" autocomplete="off"/>
+			</form>
+			<script type="text/javascript">
+				$('#search_kw')[0].placeholder = $('#search_kw')[0].placeholder || 'Search';
+				$('#search_kw').focus();
+				function do_cms_search()
+				{
+					var vars = ${vars};
+					vars.keywords = $('#search_kw').val();
+
+					if (!vars.keywords) {
+						alert('No keywords');
+						return false;
+					}
+
+					CMS.GetBox('${bind}', ${page}, vars);
+					return false;
+				}
+			</script>
+		</searchform>
+		<buttonfoot>
+			<tr><td colspan="20">
+				<script type="text/javascript">
+					function get_box_content()
+					{
+						var vars = ${vars};
+						CMS.GetContent('${bind}',0,vars);
+						return false;
+					}
+				</script>
+				${paging}<button type="button" onclick="return get_box_content();">New</button>
+			</td></tr>
+		</buttonfoot>
+		<pagingonly>
+			<tr><td colspan="20">${paging}</td></tr>
+		</pagingonly>
+		<paging>
+			<span class="pager">
+				${previous} ${next}
+			</span>
+		</paging>
+		<paging_previous>
+			<button type="button" onclick="CMS.GetBox('${bind}','${page}');return false;"><![CDATA[&lsaquo;]]></button>
+		</paging_previous>
+		<paging_next>
+			<button type="button" onclick="CMS.GetBox('${bind}','${page}');return false;"><![CDATA[&rsaquo;]]></button>
+		</paging_next>
+		<field_header_sort>
+			<th><a href="javascript:void();" onclick="return false;">${label}</a></th>
+		</field_header_sort>
+		<field_header_nosort>
+			<td><b>${label}</b></td>
+		</field_header_nosort>
+		<list_screen_row>
+			<tr>
+				${fields}
+				${deletelink}
+			</tr>
+		</list_screen_row>
+		<delete_link>
+			<td class="delete">
+				<script type="text/javascript">
+					function delete${id}()
+					{
+						var vars = ${vars};
+						$.modal.confirm2('Are you sure?', 'Yes', 'No',
+							function () {
+								CMS.Delete('${bind}','${id}', vars);
+							},
+							function () {
+								CMS.GetBox('${bind}', null, vars);
+							},
+							'red', 'green'
+						);
+						return false;
+					}
+				</script>
+				<a href="javascript:void();" onclick="return delete${id}();">DEL</a>
+			</td>
+		</delete_link>
+		<field_link>
+			<td>
+				<script type="text/javascript">
+					function get_content_box_${name}_${id}()
+					{
+						var vars = ${vars};
+						CMS.GetContent('${bind}',${id},vars);
+						return false;
+					}
+				</script>
+				<a href="javascript:void();" onclick="return get_content_box_${name}_${id}();">${value}</a></td>
+		</field_link>
+		<field_normal>
+			<td>${value}</td>
+		</field_normal>
+		<edit_screen_row>
+			<tr><th valign="top" colspan="2">${label}</th></tr>
+			<tr><td colspan="2">${field}</td></tr>
+		</edit_screen_row>
+		<breadcrumb>
+			<h2 id="breadcrumb">${group}<span>›</span><a href="javascript:void();" onclick="CMS.GetBox('${bind}');return false;">${label}</a></h2>
+		</breadcrumb>
+	</general>
+
+	<!-- MAIN FORMS -->
+	<forms>
+		<login>
+			<form id="cmslogin" action="" onsubmit="CMS.Login(this,this.btn_submit);return false;">
+				<ul>
+					<li><input type="text" name="username" value="" placeholder="Username" autocomplete="off" /></li>
+					<li><input type="password" name="password" value="" placeholder="Password" autocomplete="off" /></li>
+					<li><button type="submit" name="btn_submit">Login</button></li>
+				</ul>
+			</form>
+			<script type="text/javascript">$('#cmslogin input[name=username]').focus();</script>
+		</login>
+		<password>
+			<form class="cms_form" id="password_form" style="width:174px" action="" onsubmit="CMS.ChangePassword(this,this.btn_submit);return false;">
+				<dl><dd><input type="password" name="cpass" value="" placeholder="Current password" style="width:160px" autocomplete="off" /></dd></dl>
+				<dl><dd><input type="password" name="pass1" value="" placeholder="New password" style="width:160px" autocomplete="off" /></dd></dl>
+				<dl><dd><input type="password" name="pass2" value="" placeholder="Confirm new password" style="width:160px" autocomplete="off" /></dd></dl>
+				<dl><dd><button type="submit" name="btn_submit" class="green">Change</button></dd></dl>
+			</form>
+			<script type="text/javascript">$('#password_form input[name=cpass]').focus();</script>
+		</password>
+		<edit>
+			<iframe name="_uploadframe" id="_uploadframe" width="0" height="0" frameborder="0" />
+			<form action="cms/index.php" method="post" style="display:none;" id="_uploadform" name="uploadform" target="_uploadframe" enctype="multipart/form-data" />
+			<script type="text/javascript"><![CDATA[
+				function submit_form(fm)
+				{
+					var vars = ${vars};
+					CMS.SaveContent(fm,fm.btn_submit,'${bind}','${id}',vars);
+					return false;
+				}
+			]]></script>
+			<form id="cms_form" action="" onsubmit="return submit_form(this);">
+				<h5 id="edit-form-label" class="form-label">${label}</h5><br/>
+				<table id="cms_box" class="edit_table">
+					<tbody>${body}</tbody>
+					<tfoot>
+						<tr>
+							<!-- <td><![CDATA[&nbsp;]]></td> -->
+							<td colspan="20">
+								${submitbutton}
+								<script type="text/javascript"><![CDATA[
+									function get_box()
+									{
+										var vars = ${vars};
+										CMS.GetBox('${bind}',null,vars);
+										return false;
+									}
+								]]></script>
+								<button type="button" onclick="return get_box();" class="${buttonclass}">${backbutton}</button>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+				<script type="text/javascript"><![CDATA[
+					//setTimeout(function () {
+						$('.selectsearch').each(function (i, el) {
+							var flag = $(el).hasClass('live-search');
+							if (flag) return;
+							$(el).data('live-search', true).addClass('live-search').selectpicker({
+								style: 'btn-info',
+								size: 4
+							});
+						});
+					//}, 500);
+					call_snippet_functions();
+
+					var disabled = ${disabled};
+					if (true === disabled) {
+						$('#cms_form').find('input, textarea, select').attr('disabled', 'disabled').prop('disabled', 'disabled');
+					}
+				]]></script>
+				${hiddenfields}
+			</form>
+		</edit>
+		<submitbutton>
+			<button type="submit" name="btn_submit" class="green">Save</button>
+		</submitbutton>
+		<hidden>
+			<input type="hidden" name="${name}" value="${value}"/>
+		</hidden>
+	</forms>
+
+	<!-- EDITABLE TYPES -->
+	<types>
+		<word>
+			<input type="text" name="${name}" value="${value}" autocomplete="off" id="edit_type_${name}" class="word" format="^\w+$" case="${format}"/><br/>
+		</word>
+		<text>
+			<input type="text" name="${name}" value="${value}" autocomplete="off" id="edit_type_${name}" format="${format}" />
+		</text>
+		<email>
+			<input type="text" name="${name}" value="${value}" autocomplete="off" id="edit_type_${name}" format="^(.+?)\@(.+?)\.(.+?)$" />
+		</email>
+		<tinytext>
+			<input type="text" name="${name}" value="${value}" style="width:80px" autocomplete="off" />
+		</tinytext>
+		<link>
+			<input type="text" name="${name}" value="${value}" autocomplete="off" id="edit_type_${name}" class="cleanlink" format="${format}"/>
+		</link>
+		<url>
+			<input type="text" name="${name}" value="${value}" autocomplete="off" id="edit_type_${name}" format="${format}" placeholder="http://" />
+		</url>
+		<number>
+			<input type="number" style="width:100px" name="${name}" value="${value}" id="edit_type_${name}" format="${format}" autocomplete="off" />
+		</number>
+		<readonly>
+			<input type="text" name="${name}" value="${value}" readonly="readonly" id="edit_type_${name}" />
+		</readonly>
+		<hidden>
+			<input type="hidden" name="${name}" value="${value}" readonly="readonly" id="edit_type_${name}" /> <span>${value}</span>
+		</hidden>
+		<label>
+			<label>${value}</label>
+		</label>
+		<textarea>
+			<textarea name="${name}" id="edit_type_${name}" format="${format}">${value}</textarea>
+		</textarea>
+		<expandable>
+			<div name="${name}" id="edit_type_${name}" format="${format}" class="expandable"></div>
+			<script type="text/javascript"><![CDATA[
+				$('#edit_type_${name}').html('${value}').expandable();
+			]]></script>
+		</expandable>
+		<password>
+			<input type="password" name="${name}" value="${value}" id="edit_type_${name}" placeholder="Password" format="${format}" />
+		</password>
+		<check>
+			<label>
+				<input id="checkbox_${name}" type="hidden" name="${name}" value="${value}"/>
+				<script type="text/javascript"><![CDATA[
+					(function(){
+						var el = $('#checkbox_${name}');
+						var handler = $('<input/>').attr({
+							'type': 'checkbox'
+						});
+						handler.on('change', function () {
+							el.val(0);
+							if ($(this).is(':checked')) el.val(1);
+						});
+						handler.insertAfter(el);
+						if (1 == el.val()) handler.attr('checked', 'checked');
+					}).call();
+				]]></script>
+				${label}
+			</label>
+		</check>
+		<bool>
+			<label><input type="radio" name="${name}" value="1" id="edit_type_${name}_true" /> Yes</label>
+			<label><input type="radio" name="${name}" value="0" id="edit_type_${name}_false" /> No</label>
+			<script type="text/javascript"><![CDATA[
+				function check_${name}(){
+					if ('1'==='${value}') $("#edit_type_${name}_true").attr("checked","checked");
+					if ('0'==='${value}') $("#edit_type_${name}_false").attr("checked","checked");
+				}
+				check_${name}();
+			]]></script>
+		</bool>
+		<datetime>
+			<input type="hidden" name="${name}" id="${name}" value="${value}" />
+			<input type="text" id="${name}_date" value="${value}" onchange="datetime_assign_${name}();" style="width:80px" />
+			<input type="text" id="${name}_time" value="${value}" onchange="datetime_assign_${name}();" style="width:60px" />
+			<script type="text/javascript"><![CDATA[
+				function datetime_init_${name}(){
+					var dt=new Date(),
+						y=dt.getFullYear(), m=dt.getMonth()+1, d=dt.getDate(), h=dt.getHours(), i=dt.getMinutes(), s=dt.getSeconds();
+						m = (m<10)?("0"+m):m, h=(h<10)?("0"+h):h, i=(i<10)?("0"+i):i, s=(s<10)?("0"+s):s,
+						fdt = y+"-"+m+"-"+d+" "+h+":"+i+":"+s;
+					var v = "${value}"?"${value}":fdt;
+
+					$("#${name}_date").val(v.split(" ")[0]);
+					$("#${name}_time").val(v.split(" ")[1]);
+					$("#${name}").val(v);
+					return v;
+				}
+				function datetime_assign_${name}(){
+					var d = $("#${name}_date").val(), t = $("#${name}_time").val();
+					$("#${name}").val(d+" "+t);
+				}
+				datetime_init_${name}();
+			]]></script>
+		</datetime>
+		<html>
+			<textarea name="${name}" id="html_${name}" style="display:none">${value}</textarea>
+			<div id="editor_panel_${name}"></div>
+			<div class="editor" id="${name}">${value}</div>
+			<script type="text/javascript"><![CDATA[
+				(function () {
+					$('#editor_panel_${name}').empty();
+			     	var ne = new nicEditor({
+			     		fullPanel: false,
+						buttonList: [
+							'bold','italic','underline','left','center','right','justify',
+							'indent','outdent','ol','ul','superscript','subscript',
+							'removeformat','link','unlink','xhtml'
+						]
+					});
+			        ne.setPanel('editor_panel_${name}');
+			     	ne.addInstance('${name}');
+				})();
+			]]></script>
+		</html>
+		<access>
+			<input type="hidden" name="${name}" value="${value}" id="${name}" />
+			<script type="text/javascript"><![CDATA[
+				function setaccess_${name}() {
+					var ac = [];
+					$(".chk_${name}").each(function () {
+						if ($(this).is(":checked")) {
+							ac.push($(this).val());
+						}
+					});
+					$("#${name}").val(ac.join(","));
+				}
+				function init_${name}(){
+					var ua = "${value}".split(","), checked, clk, da = CMS.defaultaccess;
+					for (var i=0; i<ua.length; ++i) {
+						ua[[ua[i]]] = ua[i];
+					}
+					for (var i in da) {
+						checked = ua[i] ? ' checked="checked" ' : '';
+						$('<dl class="access_${name}_dl"><dd><label><input class="chk_${name}" onclick="setaccess_${name}();" type="checkbox" value="'+i+'"'+checked+' /> '+da[i]+'</label></dd></dl>').insertAfter($("#${name}"));
+					}
+				}
+				init_${name}();
+				setaccess_${name}();
+			]]></script>
+			<style type="text/css">
+				.access_${name}_dl {
+					width: 170px;
+					background: #f4f4f4;
+					border-bottom: 1px solid #fff;
+					border-right: 1px solid #fff;
+					float: left;
+				}
+				.access_${name}_dl dd label {
+					color: #666;
+				    font-size: 11px !important;
+				}
+			</style>
+		</access>
+		<gender>
+			<select name="${name}" id="${name}" format="${format}">
+				<option value="">-- ${label} --</option>
+				<option value="male">Male</option>
+				<option value="female">Female</option>
+			</select>
+			<script type="text/javascript"><![CDATA[
+				$("#${name}").val("${value}");
+			]]></script>
+		</gender>
+		<image>
+			<select name="${name}" id="${name}" format="${format}" class="selectsearch">
+				<option value="">-- ${label} --</option>
+			</select><br/>
+			<div id="image_${name}"></div>
+			<script type="text/javascript"><![CDATA[
+				function image_${name}(opts) {
+					var vars = ${vars};
+					for (var i in vars) {
+						$("#${name}").append('<option value="'+vars[i].id+'">'+vars[i].name+'</option>');
+					}
+				}
+				image_${name}($("#${name}")[0].options);
+				$("#${name}").val("${value}");
+			]]></script>
+		</image>
+		<file>
+			<select name="${name}" id="${name}" format="${format}" class="selectsearch">
+				<option value="">-- ${label} --</option>
+			</select>
+			<script type="text/javascript"><![CDATA[
+				function file_${name}(opts) {
+					var vars = ${vars};
+					for (var i in vars) {
+						$("#${name}").append('<option value="'+vars[i].id+'">'+vars[i].name+'</option>');
+					}
+				}
+				file_${name}($("#${name}")[0].options);
+				$("#${name}").val("${value}");
+			]]></script>
+		</file>
+		<ref>
+			<select name="${name}" id="${name}" format="${format}" onchange="setref_${name}();" class="selectsearch">
+				<option value="0">-- ${label} --</option>
+			</select><br/>
+			<div id="image_${name}"></div>
+			<script type="text/javascript"><![CDATA[
+				var obj_${name} = {};
+				function ref_${name}(opts) {
+					var vars = ${vars};
+					for (var i=0; i<vars.length; i++) {
+						$("#${name}").append('<option value="'+vars[i].id+'">'+vars[i].name+'</option>');
+						obj_${name}[vars[i].id] = vars[i];
+					}
+				}
+				function setref_${name}() {
+					var imglabels = ["icon", "image", "featureimage", "pageimage", "link"];
+					if (-1 < imglabels.indexOf("${name}")) {
+						var v = $("#${name}").val();
+						$("#image_${name}").empty();
+						if (v) {
+							$("#image_${name}").append($("<img/>").attr({
+								"src": "${baseurl}assets/images/"+obj_${name}[v].path
+							}).css('max-height', '80px'));
+						}
+					}
+				}
+				window.setTimeout(function(){
+					setref_${name}();
+				}, 200);
+				ref_${name}($("#${name}")[0].options);
+				$("#${name}").val("${value}");
+			]]></script>
+		</ref>
+		<imageupload>
+			<div id="cropping_${name}" class="cropper">
+				Input the image processing properties for automatic cropping and compression.<br />
+				<div class="rounded" style="margin:4px 0px 4px 0px; padding:4px 0px 4px 8px; background: #eee;border: 1px solid #ccc; font-size:8.5pt;">
+					Width: <input type="text" id="${name}_image_width" style="width:40px" value="" /> <![CDATA[&nbsp;]]>
+					Height: <input type="text" id="${name}_image_height" style="width:40px" value="" />  <![CDATA[&nbsp;]]>
+					Maintain: <select id="${name}_image_adjust" style="width:80px">
+						<option value="auto">Auto</option>
+						<option value="height" selected="selected">Width</option>
+						<option value="width">Height</option>
+					</select>  <![CDATA[&nbsp;]]>
+					Compression: <input type="text" id="${name}_image_compression" value="0" style="width:25px" />%
+				</div>
+			</div>
+			<div style="clear:both"></div>
+			<span id="uel_${name}">
+				<input type="file" name="${name}" id="${name}_upl" data-label="${value}" title=".jpg, .jpeg, .gif, .png" />
+			</span>
+			<button type="button"  id="upload_button_${name}" class="small">Upload</button>
+			<span id="upload_progress_${name}"></span><br />
+			<img id="img_${name}" border="0" style="display:none;max-width:200px" />
+			<script type="text/javascript"><![CDATA[
+				(function () {
+					var base =  'assets/images/';
+					var btn = $('#upload_button_${name}');
+					var el = $('#${name}_upl');
+
+					if ("${value}") {
+						$("#img_${name}").attr('src', base+'${value}').css({
+							"display": "block"
+						});
+					}
+
+					btn.on('click', function () {
+						var el = $('#${name}_upl');
+						if (!$(el).val()) {
+							$.modal.notify("No file selected", true, 2000, null, '#upload_progress_${name}');
+							return false;
+						}
+
+						$.modal.locked = true;
+						$.modal.notify("Uploading...", false, 5000, null, '#upload_progress_${name}');
+
+						var fk = $('<input type="hidden" name="imagekey" value="${name}" />'),
+							im = $('<input type="hidden" />').attr("name", "${name}_original").val("${value}"),
+							w = $('<input type="hidden" />').attr("name", "${name}_image_width").val($("#${name}_image_width").val()),
+							h = $('<input type="hidden" />').attr("name", "${name}_image_height").val($("#${name}_image_height").val()),
+							a = $('<input type="hidden" />').attr("name", "${name}_image_adjust").val($("#${name}_image_adjust").val()),
+							c = $('<input type="hidden" />').attr("name", "${name}_image_compression").val($("#${name}_image_compression").val());
+
+						$("#_uploadform").empty().append(fk,$(el),w,h,a,c,im).submit();
+					});
+
+					$('#${name}_upl').filebrowser();
+				})();
+			]]></script>
+			<input type="hidden" name="${name}" value="${value}" id="el_${name}" />
+		</imageupload>
+		<simpleimageupload>
+			<div style="clear:both"></div>
+			<span id="uel_${name}">
+				<input type="file" name="${name}" id="${name}_upl" data-label="${value}" title=".jpg, .jpeg, .gif, .png" />
+			</span>
+			<button type="button"  id="upload_button_${name}" class="small">Upload</button>
+			<span id="upload_progress_${name}"></span><br />
+			<img id="img_${name}" border="0" style="display:none;max-width:200px" />
+			<script type="text/javascript"><![CDATA[
+				(function () {
+					var base =  'assets/images/';
+					var btn = $('#upload_button_${name}');
+					var el = $('#${name}_upl');
+
+					if ("${value}") {
+						$("#img_${name}").attr('src', base+'${value}').css({
+							"display": "block"
+						});
+					}
+
+					btn.on('click', function () {
+						var el = $('#${name}_upl');
+						if (!$(el).val()) {
+							$.modal.notify("No file selected", true, 2000, null, '#upload_progress_${name}');
+							return false;
+						}
+
+						$.modal.locked = true;
+						$.modal.notify("Uploading...", false, 5000, null, '#upload_progress_${name}');
+
+						var fk = $('<input type="hidden" name="imagekey" value="${name}" />'),
+							im = $('<input type="hidden" />').attr("name", "${name}_original").val("${value}");
+
+						$("#_uploadform").empty().append(fk,$(el),im).submit();
+					});
+
+					$('#${name}_upl').filebrowser();
+				})();
+			]]></script>
+			<input type="hidden" name="${name}" value="${value}" id="el_${name}" />
+		</simpleimageupload>
+		<fileupload>
+			<span id="uel_${name}"><input type="file" name="${name}" id="${name}_upl" /></span>
+			<button type="button"  onclick="upload_${name}('#${name}_upl');return false;">Upload</button>
+
+			<span id="upload_progress_${name}" />
+			<script type="text/javascript"><![CDATA[
+				if ("${value}") {
+					$("#upload_progress_${name}").text("${value}");
+				}
+				function upload_${name} (el) {
+					$.modal.locked = true;
+					$.modal.notify("Uploading...", false, 5000, null, '#upload_progress_${name}');
+					var fk = $('<input type="hidden" name="filekey" value="${name}" />'),
+						fl = $('<input type="hidden" name="${name}_original" />').val("${value}");
+					$("#_uploadform").empty().append(fk,$(el),fl).submit();
+					$("#uel_${name}").empty().append($(el));
+				}
+			]]></script>
+			<input type="hidden" name="${name}" value="${value}" id="el_${name}" />
+		</fileupload>
+		<list>
+			<select name="${name}" id="${name}" format="${format}" class="selectsearch">
+				<option value="">-- ${label} --</option>
+			</select>
+			<script type="text/javascript"><![CDATA[
+				function list_${name}(opts) {
+					var vars = ${vars};
+					$("#${name} option:gt(0)").remove();
+					for (var i=0; i< vars.length; i++) {
+						$("#${name}").append('<option value="'+vars[i].name+'">'+vars[i].text+'</option>');
+					}
+				}
+				list_${name}($("#${name}")[0].options);
+				$("#${name}").val("${value}");
+			]]></script>
+		</list>
+		<album>
+			<div id="div_${name}">
+				<select name="${name}" id="${name}" onchange="setref_${name}();" class="selectsearch">
+					<option value="">-- ${label} --</option>
+				</select>
+				<a href="javascript:void();" onclick="return get_photos_${name}();" style="margin-left:5px;">Manage Photos</a><br/><br/>
+			</div>
+			<div id="image_${name}"></div>
+			<script type="text/javascript"><![CDATA[
+				var obj_${name} = {};
+				var data = ${data};
+
+				function ref_${name}(opts) {
+					var vars = ${vars};
+					for (var i=0; i<vars.length; i++) {
+						if (vars[i].contentId !== data.id) continue;
+						$("#${name}").append('<option value="'+vars[i].id+'">'+vars[i].path+'</option>');
+						obj_${name}[vars[i].id] = vars[i];
+					}
+				}
+				function setref_${name}(sel) {
+					var v = $('#${name}').val();
+					if (v) {
+						$("#image_${name}").empty();
+						$("#image_${name}").append($("<img/>").attr({
+							"src": "${baseurl}assets/images/"+obj_${name}[v].path,
+							"height": 80
+						}));
+					}
+				}
+				window.setTimeout(function(){
+					setref_${name}();
+				}, 200);
+				ref_${name}($("#${name}")[0].options);
+				$("#${name}").val("${value}");
+
+				var bind = '${refbind}';
+				function get_photos_${name}()
+				{
+					if (bind) {
+						CMS.GetBox(bind, null, {
+							'contentId': data.id
+						});
+					}
+					return false;
+				}
+				if (0 == data.id) {
+					var notice = $('<span/>').text('Available in edit mode only');
+					$('#div_${name}').replaceWith(notice);
+				}
+				if (1 == $("#${name}").find('option').size()) {
+					$("#${name}").hide();
+				}
+			]]></script>
+		</album>
+		<!-- <seotitle>
+			<input type="text" name="${name}" value="${value}" id="edit_type_${name}" format="${format}" onkeyup="cleanlink_${name}(this);" onblur="cleanlink_${name}(this);"/><br/>
+			<span id="linkval_${name}">${link}</span>
+			<input type="hidden" name="link" value="${link}" id="link_${name}"/>
+			<script type="text/javascript"><![CDATA[
+				var data = ${data}, he = $('#link_${name}'), lv = $('#linkval_${name}');
+				if (0 < data.id && data.hasOwnProperty('link')) {
+					he.val(data.link);
+					lv.text('Link: '+data.link);
+				}
+
+				function cleanlink_${name} (el) {
+					if ('#' != el.value) {
+						var v = el.value.replace(/\W+/g, '-').toLowerCase();
+						he.val(v);
+						lv.text('Link: '+v);
+					}
+				}
+			]]></script>
+		</seotitle> -->
+		<seotitle>
+			<input type="text" name="${name}" style="width:500px" value="${value}" id="edit_type_${name}" format="${format}" onkeyup="cleanlink_${name}(this);" onblur="cleanlink_${name}(this);"/><br/>
+			<label class="seotitle-link">Link: /<input type="text" name="link" value="${link}" id="link_${name}"/></label>
+			<script type="text/javascript"><![CDATA[
+				var data = ${data}, he = $('#link_${name}'), et = $('#edit_type_${name}');
+
+				if (0 < data.id && data.hasOwnProperty('link')) {
+					he.val(data.link);
+				}
+
+				function cleanlink_${name} (el) {
+					if ('#' != el.value) {
+						var v = el.value.replace(/\W+/g, '-').toLowerCase();
+						he.val(v);
+					}
+					if (!el.value) he.val('');
+				}
+
+				if (!et.val()) he.val('');
+			]]></script>
+		</seotitle>
+		<reflink>
+			<div id="div_${name}">
+				<a href="javascript:void();" onclick="return get_refbox_${name}();">Manage</a><br/><br/>
+			</div>
+			<script type="text/javascript"><![CDATA[
+				var data_${name} = ${data};
+				var bind_${name} = '${refbind}';
+
+				function get_refbox_${name}()
+				{
+					if (bind_${name}) {
+						CMS.GetBox(bind_${name}, null, {
+							'${name}': data_${name}.id
+						});
+					}
+					return false;
+				}
+				if (0 == data_${name}.id) {
+					var notice = $('<span/>').text('Available in edit mode only');
+					$('#div_${name}').replaceWith(notice);
+				}
+			]]></script>
+		</reflink>
+		<date>
+			<input type="hidden" name="${name}" id="${name}" value="${value}" />
+			<input type="text" id="${name}_date" value="${value}" onchange="date_assign_${name}();" style="width:80px" />
+			<span>yyyy-mm-dd</span>
+			<script type="text/javascript"><![CDATA[
+				function date_init_${name}(){
+					var dt=new Date(), y=dt.getFullYear(), m=dt.getMonth()+1, d=dt.getDate();
+
+					m = (m<10)?("0"+m):m;
+					d = (d<10)?("0"+d):d;
+					var fdt = y+"-"+m+"-"+d;
+					var v = "${value}"?"${value}":fdt;
+
+					$("#${name}_date").val(v);
+					$("#${name}").val(v);
+				}
+				function date_assign_${name}(){
+					var d = $("#${name}_date").val();
+					$("#${name}").val(d);
+				}
+				date_init_${name}();
+			]]></script>
+		</date>
+		<time>
+			<input type="hidden" name="${name}" id="${name}" value="${value}" />
+			<input type="text" id="${name}_time" value="${value}" onchange="time_assign_${name}();" style="width:60px" />
+			<script type="text/javascript"><![CDATA[
+				function time_init_${name}(){
+					var dt=new Date(), h=dt.getHours(), i=dt.getMinutes(), s=dt.getSeconds();
+
+					h = (h<10)?("0"+h):h;
+					i = (i<10)?("0"+i):i;
+					s = (s<10)?("0"+s):s;
+
+					var fdt = h+":"+i+":"+s;
+					var v = "${value}"?"${value}":fdt;
+
+					$("#${name}_time").val(v);
+					$("#${name}").val(v);
+				}
+				function time_assign_${name}(){
+					var t = $("#${name}_time").val();
+					$("#${name}").val(t);
+				}
+				time_init_${name}();
+			]]></script>
+		</time>
+		<viewonly>
+			<div class="viewonly" data-name="${name}">${value}</div>
+		</viewonly>
+		<refselect>
+			<div id="div_${name}">
+				<select name="${name}" id="${name}" class="selectsearch">
+					<option value="">-- ${label} --</option>
+				</select>
+				<a href="javascript:void();" onclick="return get_ref_${name}();">Manage</a><br/><br/>
+			</div>
+			<script type="text/javascript"><![CDATA[
+				var obj_${name} = {};
+				var data = ${data};
+
+				function ref_${name}(opts) {
+					vars_${name} = ${vars};
+					for (var i=0; i<vars_${name}.length; i++) {
+						$("#${name}").append('<option value="'+vars_${name}[i].id+'">'+vars_${name}[i].name+'</option>');
+						obj_${name}[vars_${name}[i].id] = vars_${name}[i];
+					}
+				}
+				ref_${name}($("#${name}")[0].options);
+				$("#${name}").val("${value}");
+
+				var bind_${name} = '${refbind}';
+				function get_ref_${name}()
+				{
+					if (bind_${name}) {
+						CMS.GetBox(bind_${name}, null);
+					}
+					return false;
+				}
+				if (1 == $("#${name}").find('option').size()) {
+					$("#${name}").hide();
+				}
+			]]></script>
+		</refselect>
+
+		<formula>
+			<div>
+				sfsfsdfsd
+			</div>
+		</formula>
+	</types>
+
+
+</snippets>
+
+

@@ -1,0 +1,11 @@
+#live_chat {
+	width: 200px;
+	height: 160px;
+	background: #f4f4f4;
+	border: 1px solid #ccc;
+	border-width: 1px 1px 0px 1px;
+	padding: 4px;
+	position: fixed;
+	bottom: 0px;
+	right: 100px;
+}

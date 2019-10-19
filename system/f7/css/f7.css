@@ -1,0 +1,19 @@
+@import url('../vendor/animate/css/animate.css');
+@import url('../vendor/font-awesome/css/font-awesome.css');
+
+@import url('../vendor/bootstrap/css/bootstrap.min.css');
+@import url('../vendor/bootstrap/css/bootstrap-select.min.css');
+@import url('../vendor/bootstrap/css/bootstrap-datetimepicker.min.css');
+
+@import url('../vendor/jquery/css/jquery-ui.css');
+
+@import url('../vendor/tablesorter/css/tablesorter.css');
+@import url('cms.css');
+@import url('../vendor/nicedit/css/nicedit.css');
+
+.element-expand {
+    background: transparent;
+    padding: 4px;
+    border: 1px solid transparent;
+    outline: none;
+}

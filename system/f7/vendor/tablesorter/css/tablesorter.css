@@ -1,0 +1,13 @@
+table.sortable th.header {
+    background-image: url(../img/bg.gif) !important;
+    background-repeat: no-repeat !important;
+    background-position: center left !important;
+    padding-left: 18px !important;
+    /* margin: 4px 0px 0px -1px !important; */
+}
+table.sortable th.headerSortUp {
+    background-image: url(../img/asc.gif) !important;
+}
+table.sortable th.headerSortDown {
+    background-image: url(../img/desc.gif) !important;
+}
